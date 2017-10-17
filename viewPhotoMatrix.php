@@ -89,9 +89,9 @@
 			<?php # mise en place de la vue partielle : le contenu central de la page  
 				# Mise en place des deux boutons
 				print "<p>\n";
-				$imgIdPrec = $imgId - $nbImg;
-				$imgPrec = $imgDAO->jumpToImage($img, $nbImg);
-				print "<a href=viewPhotoMatrix.php?imgId=$imgIdPrec&nbImg=$nbImg>Prev</a> ";
+				$imgPrec = $imgDAO->jumpToImage($img, -$nbImg);
+				$prevImgId = $imgPrec->getId();
+				print "<a href=viewPhotoMatrix.php?imgId=$prevImgId&nbImg=$nbImg>Prev</a> ";
 				// pre-calcul de la page d'images suivante
 				$newImg = $imgDAO->jumpToImage($img, $nbImg);
 				$newImgId = $newImg->getId();
