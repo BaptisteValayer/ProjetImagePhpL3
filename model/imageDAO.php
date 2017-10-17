@@ -9,7 +9,7 @@
 		# Chemin LOCAL où se trouvent les images
 		private $path="model/IMG";
 		# Chemin URL où se trouvent les images
-		const urlPath="http://localhost/L3_Pro/Prog_PHP/Workspace/TP1_images/model/IMG";
+		const urlPath="http://localhost/L3_Pro/Prog_PHP/Workspace/ProjetImagePhpL3/model/IMG/";
 		
 		# Tableau pour stocker tous les chemins des images
 		private $imgEntry;
@@ -61,7 +61,8 @@
 		function getImage($id) {
 		    $s = $this->db->query('SELECT * FROM image WHERE id='.$id);
 		    if ($s) {
-		        $img = $s->fetchAll(PDO::FETCH_CLASS, 'Image');
+		        $data = $s->fetch(); //All(PDO::FETCH_CLASS, 'Image');
+		        $img = new Image(self::urlPath.$data['path'], $data['id']) ;
 		        return $img;
 		    } else {
 		        print "Error in getImage. id=".$id."<br/>";
@@ -82,7 +83,7 @@
 		}
 		
 		# Retourne l'image suivante d'une image
-		function getNextImage(image $img) {
+		function getNextImage(Image $img) {
 			$id = $img->getId();
 			if ($id < $this->size()) {
 				$img = $this->getImage($id+1);
@@ -93,7 +94,7 @@
 		}
 		
 		# Retourne l'image précédente d'une image
-		function getPrevImage(image $img) {
+		function getPrevImage(Image $img) {
 		    $id = $img->getId();
 		    if ($id > 1 ) {
 		        $img = $this->getImage($id-1);

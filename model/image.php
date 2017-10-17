@@ -18,7 +18,7 @@
     }
     
     function getId() {
-      var_dump($this);
+     // var_dump($this);
       return $this->id;
     }
   }
