@@ -17,7 +17,7 @@
 		# Lecture récursive d'un répertoire d'images
 		# Ce ne sont pas des objets qui sont stockes mais juste
 		# des chemins vers les images.
-		private function readDir($dir) {
+		/*private function readDir($dir) {
 			# build the full path using location of the image base
 			$fdir=$this->path.$dir;
 			if (is_dir($fdir)) {
@@ -37,7 +37,7 @@
 					}
 				}
 			}
-		}
+		}*/
 		
 	
 		
@@ -85,6 +85,7 @@
 		# Retourne l'image suivante d'une image
 		function getNextImage(Image $img) {
 			$id = $img->getId();
+			var_dump($id);
 			if ($id < $this->size()) {
 				$img = $this->getImage($id+1);
 			}else{

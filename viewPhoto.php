@@ -14,32 +14,30 @@
 			<h3>Menu</h3>
 			<ul>
 				<?php 
-					# Utilisation du modèle
+					# Utilisation du modÃ¨le
 					require_once("model/image.php");
 					require_once("model/imageDAO.php");
-					// Débute l'acces aux images
+					// DÃ©bute l'acces aux images
 					$imgDAO = new ImageDAO();
 					
 					// Construit l'image courante
 					// et l'ID courant 
-					// NB un id peut être toute chaine de caractère !!
+					// NB un id peut Ãªtre toute chaine de caractÃ¨re !!
 					if (isset($_GET["imgId"])) {
 						$imgId = $_GET["imgId"];
 						$img = $imgDAO->getImage($imgId);
 					} else {
-						// Pas d'image, se positionne sur la première
+						// Pas d'image, se positionne sur la premiÃ¨re
 						$img = $imgDAO->getFirstImage();
-						
-						
-						// Conserve son id pour définir l'état de l'interface
-						//$imgId = $img->getId();
+						// Conserve son id pour dÃ©finir l'Ã©tat de l'interface
+						$imgId = $img->getId();
 					}
 					
 					// Regarde si une taille pour l'image est connue
 					if (isset($_GET["size"])) {
 						$size = $_GET["size"];
 					} else {
-						# sinon place une valeur de taille par défaut
+						# sinon place une valeur de taille par dÃ©faut
 						$size = 480;
 					}
 					
@@ -47,7 +45,7 @@
 					# Mise en place du menu
 					$menu['Home']="index.php";
 					$menu['A propos']="aPropos.php";
-					// Pre-calcule la première image
+					// Pre-calcule la premiÃ¨re image
 					$newImg = $imgDAO->getFirstImage();     
 					# Change l'etat pour indiquer que cette image est la nouvelle
 					$newImgId=$newImg->getId(); 
@@ -56,11 +54,11 @@
 					$newImg = $imgDAO->getRandomImage();
 					$newImgId = $newImg->getId();
 					$menu['Random']="viewPhoto.php?imgId=$newImgId&size=$size";
-					# Pour afficher plus d'image passe à une autre page
+					# Pour afficher plus d'image passe Ã  une autre page
 					$menu['More']="viewPhotoMatrix.php?imgId=$imgId";    
-					// Demande à calculer un zoom sur l'image
+					// Demande Ã  calculer un zoom sur l'image
 					$menu['Zoom +']="zoom.php?zoom=1.25&imgId=$imgId&size=$size";
-					// Demande à calculer un zoom sur l'image
+					// Demande Ã  calculer un zoom sur l'image
 					$menu['Zoom -']="nonRealise.php"; 
 					// Affichage du menu
 					foreach ($menu as $item => $act) {
@@ -74,7 +72,7 @@
 			<?php # mise en place de la vue partielle : le contenu central de la page  
 				# Mise en place des deux boutons
 				print "<p>\n";
-				// pre-calcul de l'image précedente
+				// pre-calcul de l'image prÃ©cedente
 				$prevImg = $imgDAO->getPrevImage($img);
 				$prevImgId=$prevImg->getId(); 
 				print "<a href=\"viewPhoto.php?imgId=$prevImgId&size=$size\">Prev</a>\n";
@@ -85,7 +83,7 @@
 				print "</p>\n";
 				# Affiche l'image avec une reaction au click
 				print "<a href=\"zoom.php?zoom=1.25&imgId=$imgId&size=$size\">\n";
-				// Réalise l'affichage de l'image
+				// RÃ©alise l'affichage de l'image
 				$imgURL = $img->getURL();
 				print "<img src=\"$imgURL\" width=\"$size\">\n";
 				print "</a>\n";
