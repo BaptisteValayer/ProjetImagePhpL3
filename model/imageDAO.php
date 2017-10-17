@@ -54,7 +54,11 @@
 		
 		# Retourne le nombre d'images référencées dans le DAO
 		function size() {
-			return count($this->imgEntry);
+			$s = $this->db->query('SELECT COUNT(*) FROM image');
+			if($s){
+			    $data = $s->fetch();
+			    return $data[0];
+			}
 		}
 		
 		# Retourne un objet image correspondant à l'identifiant
