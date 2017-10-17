@@ -85,7 +85,6 @@
 		# Retourne l'image suivante d'une image
 		function getNextImage(Image $img) {
 			$id = $img->getId();
-			var_dump($id);
 			if ($id < $this->size()) {
 				$img = $this->getImage($id+1);
 			}else{
