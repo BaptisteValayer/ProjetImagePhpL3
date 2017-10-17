@@ -1,9 +1,11 @@
 <?php
-  
+
   # Notion d'image
   class Image {
     private $url=""; 
     private $id=0;
+    
+    const urlPath="http://localhost/L3_Pro/Prog_PHP/Workspace/ProjetImagePhpL3/model/IMG/";
     
     function __construct($u = null ,$id = null) {
       if($u !=null){
@@ -14,11 +16,12 @@
     
     # Retourne l'URL de cette image
     function getURL() {
-		return $this->url;
+        $pathUrl = self::urlPath;
+        $pathUrl .= $this->path;
+		return $pathUrl;
     }
     
     function getId() {
-     // var_dump($this);
       return $this->id;
     }
   }

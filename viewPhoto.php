@@ -46,9 +46,9 @@
 					$menu['Home']="index.php";
 					$menu['A propos']="aPropos.php";
 					// Pre-calcule la premiÃ¨re image
-					$newImg = $imgDAO->getFirstImage();     
+					$newImg = $imgDAO->getFirstImage();
 					# Change l'etat pour indiquer que cette image est la nouvelle
-					$newImgId=$newImg->getId(); 
+					$newImgId=$newImg->getId();
 					$menu['First']="viewPhoto.php?imgId=$newImgId&size=$size";
 					# Pre-calcule une image au hasard
 					$newImg = $imgDAO->getRandomImage();
