@@ -91,7 +91,6 @@
 		# Retourne l'image suivante d'une image
 		function getNextImage(Image $img) {
 			$id = $img->getId();
-			var_dump($id);
 			if ($id < $this->size()) {
 				$img = $this->getImage($id+1);
 			}else{
@@ -115,10 +114,14 @@
 		# Retourne la nouvelle image
 		function jumpToImage(image $img,$nb) {
 			$idCurrentImg = $img->getId();
-			if($idCurrentImg+$nb < $this->size()){
-			    $newImg = $this->getImage($idCurrentImg+$nb);
-			}else{
+			if ($idCurrentImg+$nb >= $this->size()) {
 			    $newImg = $this->getImage(1);
+			}
+			else if ($idCurrentImg+$nb < 1) {
+			    $newImg = $this->getImage($this->size()+$nb);
+			}
+			else {
+			    $newImg = $this->getImage($idCurrentImg+$nb);
 			}
 			return $newImg;
 		}
