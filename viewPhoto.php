@@ -59,7 +59,7 @@
 					// Demande Ã  calculer un zoom sur l'image
 					$menu['Zoom +']="zoom.php?zoom=1.25&imgId=$imgId&size=$size";
 					// Demande Ã  calculer un zoom sur l'image
-					$menu['Zoom -']="nonRealise.php"; 
+					$menu['Zoom -']="zoom.php?zoom=0.75&imgId=$imgId&size=$size"; 
 					// Affichage du menu
 					foreach ($menu as $item => $act) {
 						print "<li><a href=\"$act\">$item</a></li>\n";
