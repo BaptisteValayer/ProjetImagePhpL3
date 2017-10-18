@@ -13,13 +13,7 @@
 			<h3>Menu</h3>
 			<ul>
 				<?php # Mise en place du menu par un parcours de la table associative
-                    $menu['Home']="index.php";
-                    $menu['A propos']="index.php?controller=Home&action=aPropos";
-					$menu['Voir photos']="viewPhoto.php";
-					
-					foreach ($menu as $item => $act) {
-						print "<li><a href=\"$act\">$item</a></li>\n";
-					}
+                   require_once('view/mainMenuView.php');
 					?>
 				</ul>
 			</div>
