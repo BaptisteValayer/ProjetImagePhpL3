@@ -16,8 +16,8 @@
 			<ul>
 				<?php # Mise en place du menu par un parcours de la table associative
                    require_once('view/mainMenuView.php');
-					?>
-				</ul>
+				?>
+			</ul>
 			</div>
 		
 		<div id="corps">

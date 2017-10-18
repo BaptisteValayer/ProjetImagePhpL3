@@ -23,8 +23,8 @@
 						print "<li><a href=\"$act\">$item</a></li>\n";
 					}
 					?>
-				</ul>
-			</div>
+			</ul>
+		</div>
 		
 		<div id="corps">
 			<h1> Information !</h1>

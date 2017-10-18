@@ -1,8 +1,17 @@
 <?php
     require_once("view/data.php");
+    require_once("view/menu.php");
     
     class Home {
         
+        function __construct(){
+            global $data;
+            global $menu;
+            $menu = new Menu();
+            $data = new Data();
+            //$data->menu['Home'] = "index.php";
+            $data->menu = $menu->getHomePageMenu();
+        }
         // Recupere les parametres de maniÃ¨re globale
         // Pour toutes les actions de ce contrÃ´leur
         protected function getParam() {
@@ -29,9 +38,7 @@
             global $from,$mode,$data;
             $this->getParam();
             // Selectionne et charge la vue
-            $data = new Data();
-            $data->content = "homeView.php";
-            $data->menu['Home'] = "index.php";
+            $data->content = "view/homeView.php";
             require_once("view/mainView.php");
         }
         
@@ -39,10 +46,8 @@
             global $from,$mode,$data;
             $this->getParam();
             // Selectionne et charge la vue
-            $data = new Data();
-            $data->content = "homeView.php";
-            $data->menu['Home'] = "index.php";
-            require_once("view/aProposView.php");
+            $data->content = "view/aProposView.php";
+            require_once("view/mainView.php");
         }
     }
 
