@@ -37,6 +37,8 @@
         function index() {
             global $from,$mode,$data;
             $this->getParam();
+            $m = new HomeMenu();
+            $data->menu = $m->affiche();
             // Selectionne et charge la vue
             $data->content = "view/homeView.php";
             require_once("view/mainView.php");
@@ -45,10 +47,10 @@
         function aPropos(){
             global $from,$mode,$data;
             $m = new HomeMenu();
+            $data->menu = $m->affiche();
             $this->getParam();
             // Selectionne et charge la vue
             $data->content = "view/aProposView.php";
-            $data->menu = $m->affiche();
             require_once("view/mainView.php");
         }
     }
