@@ -44,9 +44,11 @@
         
         function aPropos(){
             global $from,$mode,$data;
+            $m = new HomeMenu();
             $this->getParam();
             // Selectionne et charge la vue
             $data->content = "view/aProposView.php";
+            $data->menu = $m->affiche();
             require_once("view/mainView.php");
         }
     }
