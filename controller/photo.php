@@ -1,5 +1,7 @@
 <?php
     require_once("model/image.php");
+    require_once("view/menu.php");
+    require_once("view/data.php");
 
     class Photo {
         
@@ -33,13 +35,14 @@
         function index() {
             global $from,$mode,$data;
             $this->getParam();
-            $this->setNews();
             // Selectionne et charge la vue
             require_once("view/main.php");
         }
         
         function first(){
-            
+            global $data;
+            $data->content = "view/photoView.php";
+            require_once("view/mainView.php");
         }
         
         function next(){

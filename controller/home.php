@@ -1,6 +1,6 @@
 <?php
     require_once("view/data.php");
-    require_once("view/menu.php");
+    require_once("controller/menu.php");
     
     class Home {
         
