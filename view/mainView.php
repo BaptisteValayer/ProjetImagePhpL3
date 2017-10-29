@@ -13,7 +13,7 @@
 			<h3>Menu</h3>
 			<ul>
 				<?php # Mise en place du menu par un parcours de la table associative
-                        require_once($data->menu);
+                        echo $data->menu;
 					?>
 				</ul>
 			</div>

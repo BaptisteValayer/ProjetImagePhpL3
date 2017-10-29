@@ -1,16 +1,14 @@
 <?php
     require_once("view/data.php");
-    require_once("controller/menu.php");
+    require_once("controller/homeMenu.php");
     
     class Home {
         
         function __construct(){
             global $data;
             global $menu;
-            $menu = new Menu();
             $data = new Data();
             //$data->menu['Home'] = "index.php";
-            $data->menu = $menu->getHomePageMenu();
         }
         // Recupere les parametres de maniÃ¨re globale
         // Pour toutes les actions de ce contrÃ´leur

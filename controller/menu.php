@@ -3,6 +3,7 @@
     class Menu{
         
         protected $menu;
+        protected $menuPage;
         
         function __construct(){
 
@@ -13,9 +14,10 @@
         }
         
         function affiche() {
-            foreach ($data->menu as $item => $act) {
-                print "<li><a href=\"$act\">$item</a></li>\n";
+            foreach ($this->menu as $item => $act) {
+                $this->menuPage.="<li><a href=\"$act\">$item</a></li>\n";
             }
+            return $this->menuPage;
         }
     }
 ?>
