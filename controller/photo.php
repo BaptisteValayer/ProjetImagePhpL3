@@ -54,7 +54,7 @@
             //récupération de l'image à partir de l'id
             $data->imgId = $imgId;
             $imgURL = $img->getURL();
-            $data->imgURl = $imgURL;
+            $data->imgURL = $imgURL;
             $data->size = $size;
             
             //Récupération de l'id de l'image suivante
@@ -72,7 +72,7 @@
             $this->getParam();
             $data->imgId = $imgId;
             $imgURL = $img->getURL();
-            $data->imgURl = $imgURL;
+            $data->imgURL = $imgURL;
             $data->size = $size;
             /*
             $this->image = $this->imageDAO->getNextImage($img);
@@ -94,7 +94,7 @@
             $this->getParam();
             $data->imgId = $imgId;
             $imgURL = $img->getURL();
-            $data->imgURl = $imgURL;
+            $data->imgURL = $imgURL;
             $data->size = $size;
             /*
              $this->image = $this->imageDAO->getNextImage($img);
@@ -112,7 +112,20 @@
         }
         
         function random(){
+            global $size, $menu, $data;
+            $this->getParam();
+            $data->size = $size;
+            $this->image = $this->imageDAO->getRandomImage();
+            $data->imgURL = $this->image->getURL();
             
+            //Récupération de l'id de l'image suivante
+            $data->nextId = $this->imageDAO->getNextImage($this->image)->getId();
+            
+            //Récupération de l'id de l'image précédente
+            $data->prevId = $this->imageDAO->getPrevImage($this->image)->getId();
+            $data->content = "view/photoView.php";
+            $data->menu = $menu->affiche();
+            require_once("view/mainView.php");
         }
         
         function zoom(){
