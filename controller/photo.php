@@ -15,6 +15,7 @@
             $this->imageDAO = new ImageDAO();
             $data = new Data();
             $menu = new PhotoMenu();
+
             
         }
         
@@ -129,7 +130,22 @@
         }
         
         function zoom(){
+            global $size, $img, $data, $imgId, $menu;
+            $this->getParam();
+            $data->imgId = $imgId;
+            $data->size = $size*1.25;
+            $imgURL = $img->getURL();
+            $data->imgURL = $imgURL;
             
+            //Récupération de l'id de l'image suivante
+            $data->nextId = $this->imageDAO->getNextImage($this->image)->getId();
+            
+            //Récupération de l'id de l'image précédente
+            $data->prevId = $this->imageDAO->getPrevImage($this->image)->getId();
+            $data->content = "view/photoView.php";
+            
+            $data->menu = $menu->affiche();
+            require_once("view/mainView.php");
         }
          
     }
