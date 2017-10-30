@@ -51,10 +51,17 @@
         function first(){
             global $data, $menu, $size, $img, $imgId;
             $this->getParam();
+            //récupération de l'image à partir de l'id
             $data->imgId = $imgId;
             $imgURL = $img->getURL();
             $data->imgURl = $imgURL;
             $data->size = $size;
+            
+            //Récupération de l'id de l'image suivante
+            $data->nextId = $this->imageDAO->getNextImage($img)->getId();
+            
+            //Récupération de l'id de l'image précédente
+            $data->prevId = $this->imageDAO->getPrevImage($img)->getId();
             $data->content = "view/photoView.php";
             $data->menu = $menu->affiche();
             require_once("view/mainView.php");
@@ -63,11 +70,20 @@
         function next(){
             global $data, $menu, $size, $imgId, $img;
             $this->getParam();
+            $data->imgId = $imgId;
+            $imgURL = $img->getURL();
+            $data->imgURl = $imgURL;
+            $data->size = $size;
+            /*
             $this->image = $this->imageDAO->getNextImage($img);
             $imgURL = $this->image->getURL();
             $data->imgId = $this->image->getId();;
-            $data->imgURl = $this->image->getURL();
-            $data->size = $size;
+            $data->imgURl = $this->image->getURL();*/
+            //Récupération de l'id de l'image suivante
+            $data->nextId = $this->imageDAO->getNextImage($img)->getId();
+            
+            //Récupération de l'id de l'image précédente
+            $data->prevId = $this->imageDAO->getPrevImage($img)->getId();
             $data->content = "view/photoView.php";
             $data->menu = $menu->affiche();
             require_once("view/mainView.php");
@@ -76,11 +92,20 @@
         function prev(){
             global $data, $menu, $size, $imgId, $img;
             $this->getParam();
-            $this->image = $this->imageDAO->getPrevImage($img);
-            $imgURL = $this->image->getURL();
-            $data->imgId = $this->image->getId();;
-            $data->imgURl = $this->image->getURL();
+            $data->imgId = $imgId;
+            $imgURL = $img->getURL();
+            $data->imgURl = $imgURL;
             $data->size = $size;
+            /*
+             $this->image = $this->imageDAO->getNextImage($img);
+             $imgURL = $this->image->getURL();
+             $data->imgId = $this->image->getId();;
+             $data->imgURl = $this->image->getURL();*/
+            //Récupération de l'id de l'image suivante
+            $data->nextId = $this->imageDAO->getNextImage($img)->getId();
+            
+            //Récupération de l'id de l'image précédente
+            $data->prevId = $this->imageDAO->getPrevImage($img)->getId();
             $data->content = "view/photoView.php";
             $data->menu = $menu->affiche();
             require_once("view/mainView.php");
