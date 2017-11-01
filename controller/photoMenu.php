@@ -16,5 +16,9 @@ class PhotoMenu extends Menu {
         $menu['Zoom -']="nonRealise.php";
         // Affichage du menu
     }
+    
+    function setZoom($newLink){
+        $this->menu['Zoom +']=$newLink;
+    }
         
 }

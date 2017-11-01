@@ -57,6 +57,7 @@
             $imgURL = $img->getURL();
             $data->imgURL = $imgURL;
             $data->size = $size;
+            $menu->setZoom("index.php?controller=Photo&action=zoom&imgId=$imgId&size=$size");
             
             //Récupération de l'id de l'image suivante
             $data->nextId = $this->imageDAO->getNextImage($img)->getId();
@@ -75,6 +76,7 @@
             $imgURL = $img->getURL();
             $data->imgURL = $imgURL;
             $data->size = $size;
+            $menu->setZoom("index.php?controller=Photo&action=zoom&imgId=$imgId&size=$size");
             /*
             $this->image = $this->imageDAO->getNextImage($img);
             $imgURL = $this->image->getURL();
@@ -97,6 +99,7 @@
             $imgURL = $img->getURL();
             $data->imgURL = $imgURL;
             $data->size = $size;
+            $menu->setZoom("index.php?controller=Photo&action=zoom&imgId=$imgId&size=$size");
             /*
              $this->image = $this->imageDAO->getNextImage($img);
              $imgURL = $this->image->getURL();
@@ -119,6 +122,9 @@
             $this->image = $this->imageDAO->getRandomImage();
             $data->imgURL = $this->image->getURL();
             
+            $imgId = $this->image->getId();
+            $menu->setZoom("index.php?controller=Photo&action=zoom&imgId=$imgId&size=$size");
+            
             //Récupération de l'id de l'image suivante
             $data->nextId = $this->imageDAO->getNextImage($this->image)->getId();
             
@@ -136,7 +142,7 @@
             $data->size = $size*1.25;
             $imgURL = $img->getURL();
             $data->imgURL = $imgURL;
-            
+            $menu->setZoom("index.php?controller=Photo&action=zoom&imgId=$imgId&size=$data->size");
             //Récupération de l'id de l'image suivante
             $data->nextId = $this->imageDAO->getNextImage($this->image)->getId();
             
