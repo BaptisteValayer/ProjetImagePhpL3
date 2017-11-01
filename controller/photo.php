@@ -14,7 +14,7 @@
             $this->image = new Image();
             $this->imageDAO = new ImageDAO();
             $data = new Data();
-            $menu = new PhotoMenu();
+            //$menu = new PhotoMenu();
 
             
         }
@@ -23,11 +23,19 @@
         // Pour toutes les actions de ce contrÃ´leur
         protected function getParam() {
             // Recupère l'id de l'image
-            global $imgId,$size,$img;
+            global $imgId,$size,$img, $listCategory, $data, $menu;
+           /* if(isset($_GET["category"])){
+                $menu = new PhotoMenu($_GET["category"]);
+            }else{*/
+                $menu = new PhotoMenu();
+           // }
             if (isset($_GET["imgId"])) {
                 $imgId = $_GET["imgId"];
-                $imgId = $_GET["imgId"];
-                $img = $this->imageDAO->getImage($imgId);
+                if(isset($_GET["category"])){
+                    $img = $this->imageDAO->getImage($imgId, $_GET["category"]);
+                }else{
+                    $img = $this->imageDAO->getImage($imgId);
+                }
             } else {
                 $img = $this->imageDAO->getFirstImage();
                 // Conserve son id pour dÃ©finir l'Ã©tat de l'interface
@@ -39,6 +47,10 @@
             } else {
                 $size = 480;
             }
+            
+            $listCategory = $this->imageDAO->getAllCategory();
+            $data->listCategory = $listCategory;
+            //var_dump($listCategory);
         }
         
         // LISTE DES ACTIONS DE CE CONTROLEUR
@@ -50,7 +62,7 @@
         }
         
         function first(){
-            global $data, $menu, $size, $img, $imgId;
+            global $data, $menu, $size, $img, $imgId, $listCategory;
             $this->getParam();
             //récupération de l'image à partir de l'id
             $data->imgId = $imgId;

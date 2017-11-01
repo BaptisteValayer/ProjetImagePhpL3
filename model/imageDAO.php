@@ -62,8 +62,13 @@
 		}
 		
 		# Retourne un objet image correspondant à l'identifiant
-		function getImage($id) {
-		    $s = $this->db->query('SELECT * FROM image WHERE id='.$id);
+		function getImage($id, $category=null) {
+		    $requete = 'SELECT * FROM image WHERE id='.$id;
+		    if($category != null){
+		        $requete.= 'and category='.$category;
+		    }
+		    var_dump($requete);
+		    $s = $this->db->query($requete);
 		    if ($s) {
 		        $data = $s->fetchAll(PDO::FETCH_CLASS, 'Image');
 		        //var_dump($data);
@@ -140,6 +145,19 @@
 				$id++;
 			}
 			return $res;
+		}
+		
+		function getAllCategory(){
+		    $s = $this->db->query('SELECT Distinct(category) FROM image');
+		    if ($s) {
+		        $data = $s->fetchAll(PDO::FETCH_NUM);
+		        //var_dump($data);
+		        return $data;
+		    }else{
+		        print "Error in getAllCatergory<br/>";
+		        $err= $this->db->errorInfo();
+		        print $err[2]."<br/>";
+		    }
 		}
 	}
 	
