@@ -58,6 +58,8 @@
             $data->imgURL = $imgURL;
             $data->size = $size;
             $menu->setZoom("index.php?controller=Photo&action=zoom&imgId=$imgId&size=$size");
+            $data->commentaire = $img->getCommentaire();
+            $data->categorie = $img->getCategorie();
             
             //Récupération de l'id de l'image suivante
             $data->nextId = $this->imageDAO->getNextImage($img)->getId();
@@ -77,11 +79,10 @@
             $data->imgURL = $imgURL;
             $data->size = $size;
             $menu->setZoom("index.php?controller=Photo&action=zoom&imgId=$imgId&size=$size");
-            /*
-            $this->image = $this->imageDAO->getNextImage($img);
-            $imgURL = $this->image->getURL();
-            $data->imgId = $this->image->getId();;
-            $data->imgURl = $this->image->getURL();*/
+            
+            $data->commentaire = $img->getCommentaire();
+            $data->categorie = $img->getCategorie();
+            
             //Récupération de l'id de l'image suivante
             $data->nextId = $this->imageDAO->getNextImage($img)->getId();
             
@@ -100,11 +101,10 @@
             $data->imgURL = $imgURL;
             $data->size = $size;
             $menu->setZoom("index.php?controller=Photo&action=zoom&imgId=$imgId&size=$size");
-            /*
-             $this->image = $this->imageDAO->getNextImage($img);
-             $imgURL = $this->image->getURL();
-             $data->imgId = $this->image->getId();;
-             $data->imgURl = $this->image->getURL();*/
+            
+            $data->commentaire = $img->getCommentaire();
+            $data->categorie = $img->getCategorie();
+            
             //Récupération de l'id de l'image suivante
             $data->nextId = $this->imageDAO->getNextImage($img)->getId();
             
@@ -125,6 +125,9 @@
             $imgId = $this->image->getId();
             $menu->setZoom("index.php?controller=Photo&action=zoom&imgId=$imgId&size=$size");
             
+            $data->commentaire = $this->image->getCommentaire();
+            $data->categorie = $this->image->getCategorie();
+            
             //Récupération de l'id de l'image suivante
             $data->nextId = $this->imageDAO->getNextImage($this->image)->getId();
             
@@ -143,11 +146,15 @@
             $imgURL = $img->getURL();
             $data->imgURL = $imgURL;
             $menu->setZoom("index.php?controller=Photo&action=zoom&imgId=$imgId&size=$data->size");
+            
+            $data->commentaire = $img->getCommentaire();
+            $data->categorie = $img->getCategorie();
+            
             //Récupération de l'id de l'image suivante
-            $data->nextId = $this->imageDAO->getNextImage($this->image)->getId();
+            $data->nextId = $this->imageDAO->getNextImage($img)->getId();
             
             //Récupération de l'id de l'image précédente
-            $data->prevId = $this->imageDAO->getPrevImage($this->image)->getId();
+            $data->prevId = $this->imageDAO->getPrevImage($img)->getId();
             $data->content = "view/photoView.php";
             
             $data->menu = $menu->affiche();

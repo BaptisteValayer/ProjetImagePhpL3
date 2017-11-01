@@ -66,7 +66,7 @@
 		    $s = $this->db->query('SELECT * FROM image WHERE id='.$id);
 		    if ($s) {
 		        $data = $s->fetchAll(PDO::FETCH_CLASS, 'Image');
-		       // var_dump($data);
+		        //var_dump($data);
 		        //exit(0);
 		       // $img = new Image(self::urlPath.$data['path'], $data['id']) ;    
 		        return $data[0];
