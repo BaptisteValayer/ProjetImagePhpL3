@@ -31,17 +31,13 @@
            // }
             if (isset($_GET["imgId"])) {
                 $imgId = $_GET["imgId"];
-                if(isset($_GET["category"])){
-                    $img = $this->imageDAO->getImage($imgId, $_GET["category"]);
-                }else{
-                    $img = $this->imageDAO->getImage($imgId);
-                }
+                $img = $this->imageDAO->getImage($imgId);
             } else {
                 $img = $this->imageDAO->getFirstImage();
                 // Conserve son id pour dÃ©finir l'Ã©tat de l'interface
                 $imgId = $img->getId();
             }
-            // Recupere le mode delete de l'interface
+            // Recupère la taille
             if (isset($_GET["size"])) {
                 $size = $_GET["size"];
             } else {
@@ -51,6 +47,25 @@
             $listCategory = $this->imageDAO->getAllCategory();
             $data->listCategory = $listCategory;
             //var_dump($listCategory);
+            
+            if(isset($_GET["action"])){
+                if($_GET["action"] == "random"){
+                    print "je passe dans random";
+                    //Récupération de l'id de l'image suivante
+                    $this->image = $this->imageDAO->getRandomImage();
+                    $data->nextId = $this->imageDAO->getNextImage($this->image)->getId();
+                    
+                    //Récupération de l'id de l'image précédente
+                    $data->prevId = $this->imageDAO->getPrevImage($this->image)->getId();
+                }else{
+                    //Récupération de l'id de l'image suivante
+                    $data->nextId = $this->imageDAO->getNextImage($img)->getId();
+                    
+                    //Récupération de l'id de l'image précédente
+                    $data->prevId = $this->imageDAO->getPrevImage($img)->getId();
+                }
+            }
+            
         }
         
         // LISTE DES ACTIONS DE CE CONTROLEUR
@@ -73,11 +88,9 @@
             $data->commentaire = $img->getCommentaire();
             $data->categorie = $img->getCategorie();
             
-            //Récupération de l'id de l'image suivante
-            $data->nextId = $this->imageDAO->getNextImage($img)->getId();
             
-            //Récupération de l'id de l'image précédente
-            $data->prevId = $this->imageDAO->getPrevImage($img)->getId();
+            
+           
             $data->content = "view/photoView.php";
             $data->menu = $menu->affiche();
             require_once("view/mainView.php");
@@ -95,11 +108,7 @@
             $data->commentaire = $img->getCommentaire();
             $data->categorie = $img->getCategorie();
             
-            //Récupération de l'id de l'image suivante
-            $data->nextId = $this->imageDAO->getNextImage($img)->getId();
             
-            //Récupération de l'id de l'image précédente
-            $data->prevId = $this->imageDAO->getPrevImage($img)->getId();
             $data->content = "view/photoView.php";
             $data->menu = $menu->affiche();
             require_once("view/mainView.php");
@@ -117,11 +126,7 @@
             $data->commentaire = $img->getCommentaire();
             $data->categorie = $img->getCategorie();
             
-            //Récupération de l'id de l'image suivante
-            $data->nextId = $this->imageDAO->getNextImage($img)->getId();
             
-            //Récupération de l'id de l'image précédente
-            $data->prevId = $this->imageDAO->getPrevImage($img)->getId();
             $data->content = "view/photoView.php";
             $data->menu = $menu->affiche();
             require_once("view/mainView.php");
@@ -131,7 +136,6 @@
             global $size, $menu, $data;
             $this->getParam();
             $data->size = $size;
-            $this->image = $this->imageDAO->getRandomImage();
             $data->imgURL = $this->image->getURL();
             
             $imgId = $this->image->getId();
@@ -140,11 +144,7 @@
             $data->commentaire = $this->image->getCommentaire();
             $data->categorie = $this->image->getCategorie();
             
-            //Récupération de l'id de l'image suivante
-            $data->nextId = $this->imageDAO->getNextImage($this->image)->getId();
             
-            //Récupération de l'id de l'image précédente
-            $data->prevId = $this->imageDAO->getPrevImage($this->image)->getId();
             $data->content = "view/photoView.php";
             $data->menu = $menu->affiche();
             require_once("view/mainView.php");
@@ -162,11 +162,6 @@
             $data->commentaire = $img->getCommentaire();
             $data->categorie = $img->getCategorie();
             
-            //Récupération de l'id de l'image suivante
-            $data->nextId = $this->imageDAO->getNextImage($img)->getId();
-            
-            //Récupération de l'id de l'image précédente
-            $data->prevId = $this->imageDAO->getPrevImage($img)->getId();
             $data->content = "view/photoView.php";
             
             $data->menu = $menu->affiche();
