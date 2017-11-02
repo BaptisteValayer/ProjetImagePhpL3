@@ -87,9 +87,6 @@
             $menu->setZoom("index.php?controller=Photo&action=zoom&imgId=$imgId&size=$size");
             $data->commentaire = $img->getCommentaire();
             $data->categorie = $img->getCategorie();
-            
-            
-            
            
             $data->content = "view/photoView.php";
             $data->menu = $menu->affiche();
