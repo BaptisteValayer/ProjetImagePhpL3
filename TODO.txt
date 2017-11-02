@@ -1,0 +1,5 @@
+Affichage des photo:
+	Externaliser getNext et getPrec:
+		Récupérer l'id de l'image précédente et de l'image suivante dans getParam
+	Créer une fonction permettant de retourner la liste des id trié selon un paramètre (catégorie, "j'aime"...):
+		cela permettra de mieux gérer le nouvel ordre en fonction d'affichage des images en fonction du paramètre choisi
