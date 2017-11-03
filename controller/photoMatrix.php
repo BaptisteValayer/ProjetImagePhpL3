@@ -122,6 +122,8 @@
             $imgURL = $img[0]->getURL();
             $data->imgURL = $imgURL;
             $data->nb = $nb*2;
+            
+            $data->img = $img;
             //Récupération de l'id de l'image suivante
             $data->nextId = $this->imageDAO->jumpToImage($img[0],$nb)->getId();
             

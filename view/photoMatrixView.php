@@ -3,8 +3,9 @@
     print "<a href=\"index.php?controller=PhotoMatrix&action=prev&imgId=$data->prevId&nb=$data->nb\">Prev</a>\n";
     print "<a href=\"index.php?controller=PhotoMatrix&action=next&imgId=$data->nextId&nb=$data->nb\">Next</a>\n";
     print "</p>\n";
-    /*foreach ($data->imgURL as $value) {
-        print "<img src=\"$value\" nb=\"$data->nb\">\n";
-    }*/
-    var_dump($img);
+    foreach ($data->img as $value) {
+        $src = $value->getURL();
+        print "<img src=\"$src\" nb=\"$data->nb\">\n";
+    }
+    var_dump($data->imgURL);
 ?>
