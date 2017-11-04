@@ -24,11 +24,9 @@
         protected function getParam() {
             // Recupère l'id de l'image
             global $imgId,$size,$img, $listCategory, $data, $menu;
-           /* if(isset($_GET["category"])){
-                $menu = new PhotoMenu($_GET["category"]);
-            }else{*/
-                $menu = new PhotoMenu();
-           // }
+            
+            $menu = new PhotoMenu();
+            
             if (isset($_GET["imgId"])) {
                 $imgId = $_GET["imgId"];
                 $img = $this->imageDAO->getImage($imgId);
@@ -37,13 +35,13 @@
                 // Conserve son id pour dÃ©finir l'Ã©tat de l'interface
                 $imgId = $img->getId();
             }
+            
             // Recupère la taille
             if (isset($_GET["size"])) {
                 $size = $_GET["size"];
             } else {
                 $size = 480;
             }
-            
             $listCategory = $this->imageDAO->getAllCategory();
             $data->listCategory = $listCategory;
             //var_dump($listCategory);
@@ -64,8 +62,34 @@
                     //Récupération de l'id de l'image précédente
                     $data->prevId = $this->imageDAO->getPrevImage($img)->getId();
                 }
+                
             }
             
+            if (isset($_GET["category"])){
+                $category = $_GET["category"];
+                $listId = $this->imageDAO->getListId($category);
+                if(isset($_GET["positionListId"])){
+                    $positionListId = $_GET["positionListId"];
+                }else{
+                    $positionListId = 0;
+                }
+                $img = $this->imageDAO->getImage($listId[$positionListId][0]);
+                $data->nextId = $positionListId + 1;
+                $nextPosition = $positionListId + 1;
+                $prevPosition = $positionListId - 1;
+                
+                if($nextPosition == count($listId)){
+                    $nextPosition = 0;
+                }
+                if($prevPosition == -1){
+                    $prevPosition = count($listId) - 1;
+                }
+                $data->printNext = "<a href=\"index.php?controller=Photo&action=next&size=$size&category=$category&positionListId=$nextPosition\">Next</a>\n";
+                $data->printPrev = "<a href=\"index.php?controller=Photo&action=prev&size=$size&category=$category&positionListId=$prevPosition\">Prev</a>\n";
+            }else{
+                $data->printNext = "<a href=\"index.php?controller=Photo&action=next&imgId=$data->nextId&size=$size\">Next</a>\n";
+                $data->printPrev = "<a href=\"index.php?controller=Photo&action=prev&imgId=$data->prevId&size=$size\">Prev</a>\n";
+            }      
         }
         
         // LISTE DES ACTIONS DE CE CONTROLEUR
