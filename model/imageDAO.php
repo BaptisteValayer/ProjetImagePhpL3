@@ -176,6 +176,35 @@
 		        print $err[2]."<br/>";
 		    }
 		}
+		
+		function updateComment($imgId, $comment){
+	        $requete = $this->db->prepare('update image set comment = :newComment where id = :imgId');
+	        if($requete){
+                $requete->execute(array(
+                    'newComment' => $comment,
+                    'imgId' => $imgId
+                ));
+	        }else{
+	            print "Error in updateInfoComment<br/>";
+	            $err= $this->db->errorInfo();
+	            print $err[2]."<br/>";
+	        }
+		}
+		
+		function updateCategory($imgId, $category){
+	        $requete = $this->db->prepare('update image set category = :newCategory where id = :imgId');
+	        if($requete){
+	            $requete->execute(array(
+	                'newCategory' => $category,
+	                'imgId' => $imgId
+	            ));
+	        }else{
+	            print "Error in updateInfoCategory<br/>";
+	            $err= $this->db->errorInfo();
+	            print $err[2]."<br/>";
+	        }
+		}
+	    
 	}
 	
 	# Test unitaire

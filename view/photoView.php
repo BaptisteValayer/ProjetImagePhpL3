@@ -30,7 +30,16 @@
     print "</p>\n";
     print "<img src=\"$data->imgURL\" width=\"$data->size\">\n";
     print "<p>\n";
-    print "categorie de l'image: $data->categorie</br>\n";
+    print "categorie de l'image: $data->categorie\n";
     print "commentaire de l'image: $data->commentaire\n";
     print "</p>\n";
 ?>
+
+<form action="index.php" method="get">
+	<input type="hidden" name="controller" value="photo">
+	<input type="hidden" name="action" value="update">
+	<input type="hidden" name="imgId" value="<?php print $data->imgId?>">
+	<label for="newCategory">Nouvelle catégorie: </label><input type="text" name="newCategory"><br>
+	<label for="newComment">Nouveau commentaire: </label><input type="text" name="newComment">
+	<button type="submit" name="valider" value="valider">Valider</button>
+</form>
