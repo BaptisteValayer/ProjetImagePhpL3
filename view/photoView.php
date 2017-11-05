@@ -30,8 +30,9 @@
     print "</p>\n";
     print "<img src=\"$data->imgURL\" width=\"$data->size\">\n";
     print "<p>\n";
-    print "categorie de l'image: $data->categorie\n";
-    print "commentaire de l'image: $data->commentaire\n";
+    print "categorie de l'image: $data->categorie<br>\n";
+    print "commentaire de l'image: $data->commentaire<br>\n";
+    print "jugement: $data->jugement\n";
     print "</p>\n";
 ?>
 
@@ -42,4 +43,8 @@
 	<label for="newCategory">Nouvelle catégorie: </label><input type="text" name="newCategory"><br>
 	<label for="newComment">Nouveau commentaire: </label><input type="text" name="newComment">
 	<button type="submit" name="valider" value="valider">Valider</button>
+	<br>
+	<button type="submit" name="upJugement" value="upJugement">Up</button>
+	<button type="submit" name="downJugement" value="downJugement">Down</button>
+	
 </form>

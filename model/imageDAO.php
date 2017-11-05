@@ -204,6 +204,33 @@
 	            print $err[2]."<br/>";
 	        }
 		}
+		
+		function updateJugementUp($imgId){
+		    $requete = $this->db->prepare('update image set jugement = jugement + 1 where id=:imgId;');
+		    if($requete){
+		        $requete->execute(array(
+		            'imgId' => $imgId
+		        ));
+		    }else{
+		        print "Error in updateInfoCategory<br/>";
+		        $err= $this->db->errorInfo();
+		        print $err[2]."<br/>";
+		    }
+		}
+		
+		function updateJugementDown($imgId){
+		    $requete = $this->db->prepare('update image set jugement = jugement - 1 where id=:imgId;');
+		    if($requete){
+		        $requete->execute(array(
+		            'imgId' => $imgId
+		        ));
+		    }else{
+		        print "Error in updateInfoCategory<br/>";
+		        $err= $this->db->errorInfo();
+		        print $err[2]."<br/>";
+		    }
+		}
+		    
 	    
 	}
 	

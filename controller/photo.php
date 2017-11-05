@@ -92,7 +92,9 @@
             }else{
                 $data->printNext = "<a href=\"index.php?controller=Photo&action=next&imgId=$data->nextId&size=$size\">Next</a>\n";
                 $data->printPrev = "<a href=\"index.php?controller=Photo&action=prev&imgId=$data->prevId&size=$size\">Prev</a>\n";
-            }      
+            }
+            
+            $data->jugement = $img->getJugement();
         }
         
         // LISTE DES ACTIONS DE CE CONTROLEUR
@@ -111,10 +113,12 @@
             $imgURL = $img->getURL();
             $data->imgURL = $imgURL;
             $data->size = $size;
+
             $menu->setZoom("index.php?controller=Photo&action=zoom&imgId=$imgId&size=$size");
             $data->commentaire = $img->getCommentaire();
             $data->categorie = $img->getCategorie();
-           
+            $data->jugement = $img->getJugement();
+            
             $data->content = "view/photoView.php";
             $data->menu = $menu->affiche();
             require_once("view/mainView.php");
@@ -213,9 +217,18 @@
                     $this->imageDAO->updateCategory($imgId, $_GET["newCategory"]);
                 }
             }
+            
+            if(isset($_GET["upJugement"])){
+                $this->imageDAO->updateJugementUp($imgId);
+            }
+            
+            if(isset($_GET["downJugement"])){
+                $this->imageDAO->updateJugementDown($imgId);
+            }
             $img = $this->imageDAO->getImage($imgId);
             $data->commentaire = $img->getCommentaire();
             $data->categorie = $img->getCategorie();
+            $data->jugement = $img->getJugement();
             
             
             $data->content = "view/photoView.php";
