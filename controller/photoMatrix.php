@@ -20,19 +20,19 @@
         
         protected function getParam() {
             // RecupÃ¨re un Ã©ventuel no de dÃ©part
-            global $imgId,$nb,$img;
+            global $imgId,$nb,$imgList;
             if (!isset($_GET["nb"])) {
                 $nb=2;
             }
             if (isset($_GET["imgId"])) {
                 $imgId = $_GET["imgId"];
                 $imgId = $_GET["imgId"];
-                $img = $this->imageDAO->getImageList($imgId,$nb);
+                $imgList = $this->imageDAO->getImageList($imgId,$nb);
                 
             } else {
-                $img = $this->imageDAO->getImageList($this->imageDAO->getFirstImage(),$nb);
+                $imgList = $this->imageDAO->getImageList($this->imageDAO->getFirstImage(),$nb);
                 // Conserve son id pour dÃ©finir l'Ã©tat de l'interface
-                $imgId = $img[0]->getId();
+                $imgId = $imgList[0]->getId();
             }
         }
         
@@ -45,16 +45,17 @@
         }
         
         function first(){
-            global $data, $menu, $nb, $img, $imgId, $a;
+            global $data, $menu, $nb, $imgId, $imgList;
             $this->getParam();
-            foreach ($img as $value) {
-                $data->imgId[] = $value->getId();
-                $data->imgURL[] = $value->getURL();
+            foreach ($imgList as $img) {
+                $data->imgId[] = array($img->getId());
+                console.log($img);
+                $data->imgURL[] = array($img->getURL());
             }
                 //$data->imgId += $img[$i];
                 //$data->imgURL += $img[$i];
             $data->nb = $nb;
-            
+            $img=$imgList[0];
             //Récupération de l'id de l'image suivante
             $data->nextId = $this->imageDAO->jumpToImage($img,$nb)->getId();
             //Récupération de l'id de l'image précédente
