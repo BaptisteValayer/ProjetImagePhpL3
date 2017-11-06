@@ -14,8 +14,9 @@ class PhotoMenu extends Menu {
             // Demande Ã  calculer un zoom sur l'image
             $this->menu['Zoom +']="index.php?controller=Photo&action=zoom";
             // Demande Ã  calculer un zoom sur l'image
-            $menu['Zoom -']="nonRealise.php";
+            //$this->$menu['Zoom -']="nonRealise.php";
             // Affichage du menu
+            $this->menu['Upload']="index.php?controller=Upload&action=index";
         }else{
             $this->menu['First']="index.php?controller=Photo&action=first&imgId=1&size=480&category=$category";
             $this->menu['Random']="index.php?controller=Photo&action=random&category=$category";
@@ -23,6 +24,7 @@ class PhotoMenu extends Menu {
             $this->menu['More']="index.php?controller=PhotoMatrix&action=more";
             // Demande Ã  calculer un zoom sur l'image
             $this->menu['Zoom +']="index.php?controller=Photo&action=zoom";
+            $this->menu['Upload']="index.php?controller=Upload&action=index";
         }
     }
     
