@@ -67,7 +67,6 @@
 		    if($category != null){
 		        $requete.= 'and category='.$category;
 		    }
-		    var_dump($requete);
 		    $s = $this->db->query($requete);
 		    if ($s) {
 		        $data = $s->fetchAll(PDO::FETCH_CLASS, 'Image');
@@ -159,6 +158,80 @@
 		        print $err[2]."<br/>";
 		    }
 		}
+		
+		function getListId($category = null){
+		    $requete = 'SELECT id FROM image';
+		    if($category != null){
+		       $requete .= " where category = '$category'";
+		    }
+		   // $requete .= ' order by id;';
+		    $s = $this->db->query($requete);
+		    if($s) {
+		        $data = $s->fetchAll(PDO::FETCH_NUM);
+		       // var_dump($data);
+		        return $data;
+		    }else{
+		        print "Error in getListId<br/>";
+		        $err= $this->db->errorInfo();
+		        print $err[2]."<br/>";
+		    }
+		}
+		
+		function updateComment($imgId, $comment){
+	        $requete = $this->db->prepare('update image set comment = :newComment where id = :imgId');
+	        if($requete){
+                $requete->execute(array(
+                    'newComment' => $comment,
+                    'imgId' => $imgId
+                ));
+	        }else{
+	            print "Error in updateInfoComment<br/>";
+	            $err= $this->db->errorInfo();
+	            print $err[2]."<br/>";
+	        }
+		}
+		
+		function updateCategory($imgId, $category){
+	        $requete = $this->db->prepare('update image set category = :newCategory where id = :imgId');
+	        if($requete){
+	            $requete->execute(array(
+	                'newCategory' => $category,
+	                'imgId' => $imgId
+	            ));
+	        }else{
+	            print "Error in updateInfoCategory<br/>";
+	            $err= $this->db->errorInfo();
+	            print $err[2]."<br/>";
+	        }
+		}
+		
+		function updateJugementUp($imgId){
+		    $requete = $this->db->prepare('update image set jugement = jugement + 1 where id=:imgId;');
+		    if($requete){
+		        $requete->execute(array(
+		            'imgId' => $imgId
+		        ));
+		    }else{
+		        print "Error in updateInfoCategory<br/>";
+		        $err= $this->db->errorInfo();
+		        print $err[2]."<br/>";
+		    }
+		}
+		
+		function updateJugementDown($imgId){
+		    $requete = $this->db->prepare('update image set jugement = jugement - 1 where id=:imgId;');
+		    if($requete){
+		        $requete->execute(array(
+		            'imgId' => $imgId
+		        ));
+		    }else{
+		        print "Error in updateInfoCategory<br/>";
+		        $err= $this->db->errorInfo();
+		        print $err[2]."<br/>";
+		    }
+		}
+		    
+	    
 	}
 	
 	# Test unitaire

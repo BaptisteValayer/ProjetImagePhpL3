@@ -34,6 +34,10 @@
     function getCategorie(){
         return $this->category;
     }
+    
+    function getJugement(){
+        return $this->jugement;
+    }
   }
   
   
