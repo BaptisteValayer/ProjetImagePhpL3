@@ -38,6 +38,10 @@
     function getJugement(){
         return $this->jugement;
     }
+    
+    function getIdAlbum(){
+        return $this->album;
+    }
   }
   
   

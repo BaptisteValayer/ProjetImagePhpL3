@@ -230,6 +230,33 @@
 		        print $err[2]."<br/>";
 		    }
 		}
+		
+		function updateAlbum($imgId, $albumId){
+		    $requete = $this->db->prepare('update image set album = :album where id=:imgId;');
+		    if($requete){
+		        $requete->execute(array(
+		            'album' => $albumId,
+		            'imgId' => $imgId
+		        ));
+		    }else{
+		        print "Error in updateAlbum<br/>";
+		        $err= $this->db->errorInfo();
+		        print $err[2]."<br/>";
+		    }
+		}
+		
+		function getListImageAlbum($idAlbum){
+		    $requete = "select * from image where album = $idAlbum;";
+		    $s = $this->db->query($requete);
+		    if($s){
+		        $data = $s->fetchAll(PDO::FETCH_CLASS, 'Image');
+		        return $data;
+		    }else{
+		        print "Error in updateAlbum<br/>";
+		        $err= $this->db->errorInfo();
+		        print $err[2]."<br/>";
+		    }
+		}
 		    
 	    
 	}

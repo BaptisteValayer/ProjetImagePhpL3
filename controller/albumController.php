@@ -10,6 +10,7 @@
         
         protected $album;
         protected $albumDAO;
+        protected $imageDAO;
         
         function __construct(){
             global $data, $menu;
@@ -17,6 +18,7 @@
             
             $this->album = new Album();
             $this->albumDAO = new AlbumDAO();
+            $this->imageDAO = new ImageDAO();
         }
         
         protected function getParam(){
@@ -26,6 +28,10 @@
             
             $listAlbum = $this->albumDAO->listAlbum();
             $data->listAlbum = $listAlbum;
+            
+            if(isset($_GET["albumId"])){
+                $data->albumId = $_GET["albumId"];
+            }
         }
         
         function index(){
@@ -47,6 +53,16 @@
            
             $this->getParam();
             $data->content = "view/albumView.php";
+            $data->menu = $menu->affiche();
+            require_once("view/mainView.php");
+        }
+        
+        function afficherAlbum(){
+            global $menu, $data;
+            $this->getParam();
+            $data->content = "view/photoAlbumView.php";
+            $data->listPhotoAlbum = $this->imageDAO->getListImageAlbum($data->albumId);
+            //var_dump($data->listPhotoAlbum);
             $data->menu = $menu->affiche();
             require_once("view/mainView.php");
         }

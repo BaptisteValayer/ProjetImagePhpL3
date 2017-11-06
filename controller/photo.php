@@ -1,6 +1,8 @@
 <?php
     require_once("model/image.php");
+    require_once("model/album.php");
     require_once("model/imageDAO.php");
+    require_once("model/albumDAO.php");
     require_once("controller/photoMenu.php");
     require_once("view/data.php");
 
@@ -8,11 +10,15 @@
         
         protected $image;
         protected $imageDAO;
+        protected $album;
+        protected $albumDAO;
         
         function __construct(){
             global $data, $menu;
             $this->image = new Image();
             $this->imageDAO = new ImageDAO();
+            $this->album = new Album();
+            $this->albumDAO = new AlbumDAO();
             $data = new Data();
             //$menu = new PhotoMenu();
 
@@ -44,7 +50,10 @@
             }
             $listCategory = $this->imageDAO->getAllCategory();
             $data->listCategory = $listCategory;
-            //var_dump($listCategory);
+            
+            $listAlbum = $this->albumDAO->listAlbum();
+            $data->listAlbum = $listAlbum;
+           
             
             if(isset($_GET["action"])){
                 if($_GET["action"] == "random"){
@@ -74,7 +83,6 @@
                 }
                 $img = $this->imageDAO->getImage($listId[$positionListId][0]);
                 $data->imgId=$img->getId();
-                var_dump($data->imgId);
                 $nextPosition = $positionListId + 1;
                 $prevPosition = $positionListId - 1;
                 
@@ -91,9 +99,18 @@
             }else{
                 $data->printNext = "<a href=\"index.php?controller=Photo&action=next&imgId=$data->nextId&size=$size\">Next</a>\n";
                 $data->printPrev = "<a href=\"index.php?controller=Photo&action=prev&imgId=$data->prevId&size=$size\">Prev</a>\n";
-            }
+            } 
             
-            $data->jugement = $img->getJugement();
+            if($img->getIdAlbum() != null){
+                $id = $img->getIdAlbum();
+                var_dump($id);
+                $currentAlbum = $this->albumDAO->getAlbum($id);
+                $data->nomAlbum = $currentAlbum->getNom();
+                $data->imgAlbumId = $id;
+            }else{
+                $data->nomAlbum = "pas d'album";
+                $data->imgAlbumId = -1;
+            }
         }
         
         // LISTE DES ACTIONS DE CE CONTROLEUR
@@ -131,6 +148,7 @@
             $data->imgURL = $imgURL;
             $data->size = $size;
             $menu->setZoom("index.php?controller=Photo&action=zoom&imgId=$imgId&size=$size");
+            $data->jugement = $img->getJugement();
             
             $data->commentaire = $img->getCommentaire();
             $data->categorie = $img->getCategorie();
@@ -149,6 +167,7 @@
             $data->imgURL = $imgURL;
             $data->size = $size;
             $menu->setZoom("index.php?controller=Photo&action=zoom&imgId=$imgId&size=$size");
+            $data->jugement = $img->getJugement();
             
             $data->commentaire = $img->getCommentaire();
             $data->categorie = $img->getCategorie();
@@ -168,9 +187,20 @@
             $imgId = $this->image->getId();
             $data->imgId = $imgId;
             $menu->setZoom("index.php?controller=Photo&action=zoom&imgId=$imgId&size=$size");
+            $data->jugement = $this->image->getJugement();
             
             $data->commentaire = $this->image->getCommentaire();
             $data->categorie = $this->image->getCategorie();
+            
+            if($this->image->getIdAlbum() != null){
+                $id = $this->image->getIdAlbum();
+                $currentAlbum = $this->albumDAO->getAlbum($id);
+                $data->nomAlbum = $currentAlbum->getNom();
+                $data->imgAlbumId = $id;
+            }else{
+                $data->nomAlbum = "pas d'album";
+                $data->imgAlbumId = -1;
+            }
             
             
             $data->content = "view/photoView.php";
@@ -189,6 +219,7 @@
             
             $data->commentaire = $img->getCommentaire();
             $data->categorie = $img->getCategorie();
+            $data->jugement = $img->getJugement();
             
             $data->content = "view/photoView.php";
             
@@ -224,11 +255,28 @@
             if(isset($_GET["downJugement"])){
                 $this->imageDAO->updateJugementDown($imgId);
             }
+            
+            if(isset($_GET["newAlbum"])){
+                if(!empty($_GET["newAlbum"])){
+                    $this->imageDAO->updateAlbum($imgId, $_GET["newAlbum"]);
+                }else{
+                    $this->imageDAO->updateAlbum($imgId, null);
+                }
+            }
             $img = $this->imageDAO->getImage($imgId);
             $data->commentaire = $img->getCommentaire();
             $data->categorie = $img->getCategorie();
             $data->jugement = $img->getJugement();
             
+            if($img->getIdAlbum() != null){
+                $id = $img->getIdAlbum();
+                $currentAlbum = $this->albumDAO->getAlbum($id);
+                $data->nomAlbum = $currentAlbum->getNom();
+                $data->imgAlbumId = $id;
+            }else{
+                $data->nomAlbum = "pas d'album";
+                $data->imgAlbumId = -1;
+            }
             
             $data->content = "view/photoView.php";
             $data->menu = $menu->affiche();

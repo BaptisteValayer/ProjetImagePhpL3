@@ -1,5 +1,6 @@
 <?php
-
+    require_once("album.php");
+    
     class AlbumDAO{
         
         function __construct() {
@@ -11,6 +12,20 @@
             } catch (PDOException $e) {
                 die ("Erreur : ".$e->getMessage());
             }
+        }
+        
+        function getAlbum($id){
+            $requete = "select * from album where id=$id";
+            $s= $this->db->query($requete);
+            if($s){
+                $data = $s->fetchAll(PDO::FETCH_CLASS, 'Album');
+                return $data[0];
+            }else{
+                print "Error in getAlbum <br/>";
+                $err= $this->db->errorInfo();
+                print $err[2]."<br/>";
+            }
+            
         }
         
         function createAlbum($nom){

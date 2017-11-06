@@ -10,6 +10,6 @@
 
 <?php 
     foreach($data->listAlbum as $album){
-        print '<p>'.$album->getNom().'</p>';
+        print '<p><a href="index.php?controller=albumController&action=afficherAlbum&albumId='.$album->getId().'">'.$album->getNom().'</a></p>';
     }
 ?>

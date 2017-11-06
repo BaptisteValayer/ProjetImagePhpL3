@@ -32,7 +32,8 @@
     print "<p>\n";
     print "categorie de l'image: $data->categorie<br>\n";
     print "commentaire de l'image: $data->commentaire<br>\n";
-    print "jugement: $data->jugement\n";
+    print "jugement: $data->jugement<br>\n";
+    print "album:".$data->nomAlbum."</br>\n";
     print "</p>\n";
 ?>
 
@@ -42,8 +43,25 @@
 	<input type="hidden" name="imgId" value="<?php print $data->imgId?>">
 	<label for="newCategory">Nouvelle catégorie: </label><input type="text" name="newCategory"><br>
 	<label for="newComment">Nouveau commentaire: </label><input type="text" name="newComment">
-	<button type="submit" name="valider" value="valider">Valider</button>
 	<br>
+	<label for="newAlbum">Modifier l'album</label>
+	<select name="newAlbum">
+		<option value="">sans album</option>
+	<?php 
+	   foreach($data->listAlbum as $album){
+	       print '<option value="'.$album->getId().'"';
+	       if($album->getId() == $data->imgAlbumId){
+	           print " selected "; 
+	       }
+	       print ">";
+           print $album->getNom();
+           print "</option>";
+	   }
+	?>
+</select>
+	<br>
+	<button type="submit" name="valider" value="valider">Valider</button>
+	<br>	
 	<button type="submit" name="upJugement" value="upJugement">Up</button>
 	<button type="submit" name="downJugement" value="downJugement">Down</button>
 </form>
