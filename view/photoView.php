@@ -46,5 +46,4 @@
 	<br>
 	<button type="submit" name="upJugement" value="upJugement">Up</button>
 	<button type="submit" name="downJugement" value="downJugement">Down</button>
-	
 </form>

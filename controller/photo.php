@@ -48,7 +48,6 @@
             
             if(isset($_GET["action"])){
                 if($_GET["action"] == "random"){
-                    print "je passe dans random";
                     //Récupération de l'id de l'image suivante
                     $this->image = $this->imageDAO->getRandomImage();
                     $data->nextId = $this->imageDAO->getNextImage($this->image)->getId();
