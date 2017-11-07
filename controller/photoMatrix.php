@@ -45,17 +45,19 @@
         }
         
         function first(){
-            global $data, $menu, $nb, $imgId, $imgList;
+            global $data, $menu, $nb, $imgId, $imgList, $img;
             $this->getParam();
             foreach ($imgList as $img) {
                 $data->imgId[] = array($img->getId());
-                console.log($img);
                 $data->imgURL[] = array($img->getURL());
             }
                 //$data->imgId += $img[$i];
                 //$data->imgURL += $img[$i];
             $data->nb = $nb;
+            var_dump($imgList);
+            
             $img=$imgList[0];
+            $data->imgList = $imgList;
             //Récupération de l'id de l'image suivante
             $data->nextId = $this->imageDAO->jumpToImage($img,$nb)->getId();
             //Récupération de l'id de l'image précédente
