@@ -13,5 +13,10 @@ class PhotoMatrixMenu extends Menu {
         $this->menu['Less']="index.php?controller=PhotoMatrix&action=less";
         // Affichage du menu
     }
+    
+    function setParam($more,$less){
+        $this->menu['More']=$more;
+        $this->menu['Less']=$less;        
+    }
 }
 ?>

@@ -7,5 +7,4 @@
         $src = $value->getURL();
         print "<img src=\"$src\" nb=\"$data->nb\">\n";
     }
-    var_dump($data->imgURL);
 ?>

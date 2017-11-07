@@ -24,14 +24,21 @@
             if (!isset($_GET["nb"])) {
                 $nb=2;
             }
+            else {
+                $nb=$_GET["nb"];
+            }
+            if ((isset($_GET["action"]) && $_GET["action"]=="more")){
+                $nb = $nb*2;
+            }
+            if (isset($_GET["action"]) && $_GET["action"]=="less"){
+                if($nb>2) { $nb = $nb/2;}
+            }
             if (isset($_GET["imgId"])) {
                 $imgId = $_GET["imgId"];
-                $imgId = $_GET["imgId"];
-                $imgList = $this->imageDAO->getImageList($imgId,$nb);
+                $imgList = $this->imageDAO->getImageList($this->imageDAO->getImage($imgId),$nb);
                 
             } else {
                 $imgList = $this->imageDAO->getImageList($this->imageDAO->getFirstImage(),$nb);
-                // Conserve son id pour dÃ©finir l'Ã©tat de l'interface
                 $imgId = $imgList[0]->getId();
             }
         }
@@ -46,16 +53,34 @@
         
         function first(){
             global $data, $menu, $nb, $imgId, $imgList, $img;
+            
             $this->getParam();
             foreach ($imgList as $img) {
                 $data->imgId[] = array($img->getId());
                 $data->imgURL[] = array($img->getURL());
             }
-                //$data->imgId += $img[$i];
-                //$data->imgURL += $img[$i];
+            $data->nb = $nb; 
+            $img=$imgList[0];
+            $data->imgList = $imgList;
+            //Récupération de l'id de l'image suivante
+            $data->nextId = $this->imageDAO->jumpToImage($img,$nb)->getId();
+            //Récupération de l'id de l'image précédente
+            $data->prevId = $this->imageDAO->jumpToImage($img,-$nb)->getId();
+            $data->content = "view/photoMatrixView.php";
+            $menu->setParam("index.php?controller=PhotoMatrix&action=more&nb=".$nb,"index.php?controller=PhotoMatrix&action=less&nb=".$nb);
+            $data->menu = $menu->affiche();
+            require_once("view/mainView.php");
+        }
+        
+        function next(){
+            global $data, $menu, $nb, $imgId, $imgList, $img;
+        
+            $this->getParam();
+            foreach ($imgList as $img) {
+                $data->imgId[] = array($img->getId());
+                $data->imgURL[] = array($img->getURL());
+            }
             $data->nb = $nb;
-            var_dump($imgList);
-            
             $img=$imgList[0];
             $data->imgList = $imgList;
             //Récupération de l'id de l'image suivante
@@ -67,33 +92,19 @@
             require_once("view/mainView.php");
         }
         
-        function next(){
-            global $data, $menu, $nb, $imgId, $img;
-            $this->getParam();
-            $data->imgId = $imgId;
-            $imgURL = $img->getURL();
-            $data->imgURL = $imgURL;
-            $data->nb = $nb;
-            //Récupération de l'id de l'image suivante
-            $data->nextId = $this->imageDAO->jumpToImage($img,$nb)->getId();
-            
-            //Récupération de l'id de l'image précédente
-            $data->prevId = $this->imageDAO->jumpToImage($img,-$nb)->getId();
-            $data->content = "view/photoMatrixView.php";
-            $data->menu = $menu->affiche();
-            require_once("view/mainView.php");
-        }
-        
         function prev(){
-            global $data, $menu, $nb, $imgId, $img;
+            global $data, $menu, $nb, $imgId, $imgList, $img;
+            
             $this->getParam();
-            $data->imgId = $imgId;
-            $imgURL = $img->getURL();
-            $data->imgURL = $imgURL;
+            foreach ($imgList as $img) {
+                $data->imgId[] = array($img->getId());
+                $data->imgURL[] = array($img->getURL());
+            }
             $data->nb = $nb;
+            $img=$imgList[0];
+            $data->imgList = $imgList;
             //Récupération de l'id de l'image suivante
             $data->nextId = $this->imageDAO->jumpToImage($img,$nb)->getId();
-            
             //Récupération de l'id de l'image précédente
             $data->prevId = $this->imageDAO->jumpToImage($img,-$nb)->getId();
             $data->content = "view/photoMatrixView.php";
@@ -119,37 +130,42 @@
         }
         
         function more(){
-            global $data, $menu, $nb, $imgId, $img;
+            global $data, $menu, $nb, $imgId, $imgList, $img;
             $this->getParam();
-            $data->imgId = $imgId;
-            $imgURL = $img[0]->getURL();
-            $data->imgURL = $imgURL;
-            $data->nb = $nb*2;
-            
-            $data->img = $img;
+            foreach ($imgList as $img) {
+                $data->imgId[] = array($img->getId());
+                $data->imgURL[] = array($img->getURL());
+            }
+            $data->nb = $nb;
+            $img=$imgList[0];
+            $data->imgList = $imgList;
             //Récupération de l'id de l'image suivante
-            $data->nextId = $this->imageDAO->jumpToImage($img[0],$nb)->getId();
-            
+            $data->nextId = $this->imageDAO->jumpToImage($img,$nb)->getId();
             //Récupération de l'id de l'image précédente
-            $data->prevId = $this->imageDAO->jumpToImage($img[0],-$nb)->getId();
+            $data->prevId = $this->imageDAO->jumpToImage($img,-$nb)->getId();
             $data->content = "view/photoMatrixView.php";
+            $menu->setParam("index.php?controller=PhotoMatrix&action=more&nb=".$nb,"index.php?controller=PhotoMatrix&action=less&nb=".$nb);
             $data->menu = $menu->affiche();
             require_once("view/mainView.php");
         }
         
         function less(){
-            global $data, $menu, $nb, $imgId, $img;
+            global $data, $menu, $nb, $imgId, $imgList, $img;
+            
             $this->getParam();
-            $data->imgId = $imgId;
-            $imgURL = $img[0]->getURL();
-            $data->imgURL = $imgURL;
-            $data->nb = $nb/2;
+            foreach ($imgList as $img) {
+                $data->imgId[] = array($img->getId());
+                $data->imgURL[] = array($img->getURL());
+            }
+            $data->nb = $nb;
+            $img=$imgList[0];
+            $data->imgList = $imgList;
             //Récupération de l'id de l'image suivante
             $data->nextId = $this->imageDAO->jumpToImage($img,$nb)->getId();
-            
             //Récupération de l'id de l'image précédente
             $data->prevId = $this->imageDAO->jumpToImage($img,-$nb)->getId();
             $data->content = "view/photoMatrixView.php";
+            $menu->setParam("index.php?controller=PhotoMatrix&action=more&nb=".$nb,"index.php?controller=PhotoMatrix&action=less&nb=".$nb);
             $data->menu = $menu->affiche();
             require_once("view/mainView.php");
         }

@@ -13,7 +13,7 @@
     //$newImgId = $newImg->getId();
     $menu['Random']="index.php?controller=Home&action=random";
     # Pour afficher plus d'image passe Ã  une autre page
-    $menu['More']="index.php?controller=Home&action=more";
+    $menu['More']="index.php?controller=Home&action=more&nb=2";
     // Demande Ã  calculer un zoom sur l'image
     $menu['Zoom +']="index.php?controller=Home&action=zoomI";
     // Demande Ã  calculer un zoom sur l'image
