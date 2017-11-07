@@ -103,7 +103,6 @@
             
             if($img->getIdAlbum() != null){
                 $id = $img->getIdAlbum();
-                var_dump($id);
                 $currentAlbum = $this->albumDAO->getAlbum($id);
                 $data->nomAlbum = $currentAlbum->getNom();
                 $data->imgAlbumId = $id;
