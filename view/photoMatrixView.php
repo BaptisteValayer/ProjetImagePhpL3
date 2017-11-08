@@ -5,6 +5,6 @@
     print "</p>\n";
     foreach ($data->imgList as $value) {
         $src = $value->getURL();
-        print "<img src=\"$src\" nb=\"$data->nb\">\n";
+        print "<img src=\"$src\" nb=\"$data->nb\" width=200>\n";
     }
 ?>

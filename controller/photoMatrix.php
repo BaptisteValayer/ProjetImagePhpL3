@@ -21,6 +21,18 @@
         protected function getParam() {
             // RecupÃ¨re un Ã©ventuel no de dÃ©part
             global $imgId,$nb,$imgList;
+            if (isset($_GET["imgId"])) {
+                $imgId = $_GET["imgId"];
+                $imgList = $this->imageDAO->getImageList($this->imageDAO->getImage($imgId),$nb);
+                
+            } else {
+                $imgList = $this->imageDAO->getImageList($this->imageDAO->getFirstImage(),$nb);
+                $imgId = $imgList[0]->getId();
+            }
+        }
+        
+        protected function getNb() {
+            global $nb;
             if (!isset($_GET["nb"])) {
                 $nb=2;
             }
@@ -32,14 +44,6 @@
             }
             if (isset($_GET["action"]) && $_GET["action"]=="less"){
                 if($nb>2) { $nb = $nb/2;}
-            }
-            if (isset($_GET["imgId"])) {
-                $imgId = $_GET["imgId"];
-                $imgList = $this->imageDAO->getImageList($this->imageDAO->getImage($imgId),$nb);
-                
-            } else {
-                $imgList = $this->imageDAO->getImageList($this->imageDAO->getFirstImage(),$nb);
-                $imgId = $imgList[0]->getId();
             }
         }
         
@@ -54,6 +58,7 @@
         function first(){
             global $data, $menu, $nb, $imgId, $imgList, $img;
             
+            $this->getNb();
             $this->getParam();
             foreach ($imgList as $img) {
                 $data->imgId[] = array($img->getId());
@@ -75,7 +80,8 @@
         function next(){
             global $data, $menu, $nb, $imgId, $imgList, $img;
         
-            $this->getParam();
+            $this->getNb();
+            $this->getParam();            
             foreach ($imgList as $img) {
                 $data->imgId[] = array($img->getId());
                 $data->imgURL[] = array($img->getURL());
@@ -95,7 +101,8 @@
         function prev(){
             global $data, $menu, $nb, $imgId, $imgList, $img;
             
-            $this->getParam();
+            $this->getNb();
+            $this->getParam();            
             foreach ($imgList as $img) {
                 $data->imgId[] = array($img->getId());
                 $data->imgURL[] = array($img->getURL());
@@ -113,17 +120,23 @@
         }
         
         function random(){
-            global $nb, $menu, $data;
-            $this->getParam();
-            $data->size = $size;
-            $this->image = $this->imageDAO->getRandomImage();
-            $data->imgURL = $this->image->getURL();
+            global $data, $menu, $nb, $imgId, $imgList, $img;
             
+            $this->getNb();
+            $imgList = $this->imageDAO->getImageList($this->imageDAO->getRandomImage(),$nb);
+            $imgId = $imgList[0]->getId();
+            
+            foreach ($imgList as $img) {
+                $data->imgId[] = array($img->getId());
+                $data->imgURL[] = array($img->getURL());
+            }
+            $data->nb = $nb;
+            $img=$imgList[0];
+            $data->imgList = $imgList;
             //Récupération de l'id de l'image suivante
-            $data->nextId = $this->imageDAO->jumpToImage($this->image,$nb)->getId();
-            
+            $data->nextId = $this->imageDAO->jumpToImage($img,$nb)->getId();
             //Récupération de l'id de l'image précédente
-            $data->prevId = $this->imageDAO->jumpToImage($this->image,-$nb)->getId();
+            $data->prevId = $this->imageDAO->jumpToImage($img,-$nb)->getId();
             $data->content = "view/photoMatrixView.php";
             $data->menu = $menu->affiche();
             require_once("view/mainView.php");
@@ -131,6 +144,8 @@
         
         function more(){
             global $data, $menu, $nb, $imgId, $imgList, $img;
+            
+            $this->getNb();
             $this->getParam();
             foreach ($imgList as $img) {
                 $data->imgId[] = array($img->getId());
