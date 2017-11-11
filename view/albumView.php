@@ -9,7 +9,10 @@
 </form>
 
 <?php 
+    // On parcourt la liste d'album afin d'en afficher le nom (avec un lien dessus permettant d'afficher le contenu)
+    // Ainsi qu'un bouton de suppression (définitif)
     foreach($data->listAlbum as $album){
-        print '<p><a href="index.php?controller=albumController&action=afficherAlbum&albumId='.$album->getId().'">'.$album->getNom().'</a></p>';
+        print '<p><a href="index.php?controller=albumController&action=afficherAlbum&albumId='.$album->getId().'">'.$album->getNom().'</a>';
+        print '  <a href="index.php?controller=albumController&action=deleteAlbum&albumId='.$album->getId().'"><button>Supprimer l\'album</button></a></p>';
     }
 ?>

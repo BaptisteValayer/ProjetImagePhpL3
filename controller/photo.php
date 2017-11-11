@@ -25,14 +25,14 @@
             
         }
         
-        // Recupere les parametres de maniÃ¨re globale
-        // Pour toutes les actions de ce contrÃ´leur
+        // Recupere les parametres de manière globale
+        // Pour toutes les actions de ce controleur
         protected function getParam() {
-            // Recupère l'id de l'image
             global $imgId,$size,$img, $listCategory, $data, $menu;
-            
+            //Création du menu approprié
             $menu = new PhotoMenu();
             
+            //récupération de l'id de l'image
             if (isset($_GET["imgId"])) {
                 $imgId = $_GET["imgId"];
                 $img = $this->imageDAO->getImage($imgId);
@@ -42,19 +42,30 @@
                 $imgId = $img->getId();
             }
             
+            //Attribution des variables d'images
+            $data->commentaire = $img->getCommentaire();
+            $data->categorie = $img->getCategorie();
+            $data->jugement = $img->getJugement();
+            $data->imgURL = $img->getURL();
+            
             // Recupère la taille
             if (isset($_GET["size"])) {
                 $size = $_GET["size"];
             } else {
                 $size = 480;
             }
+            $data->size = $size;
+            
+            //Création de la variable contenant les catégories (pour la liste déroulante)
             $listCategory = $this->imageDAO->getAllCategory();
             $data->listCategory = $listCategory;
             
+            //Création de la variable contenant la liste des albums (pour la liste déroulante)
             $listAlbum = $this->albumDAO->listAlbum();
             $data->listAlbum = $listAlbum;
            
-            
+            //Calcul de l'image précédente et suivante
+            //On test si on est dans "random" car dans ce cas là l'image courrante doit être aléatoire
             if(isset($_GET["action"])){
                 if($_GET["action"] == "random"){
                     //Récupération de l'id de l'image suivante
@@ -73,19 +84,37 @@
                 
             }
             
+            
+            // Si on a le filtre de la catégorie en cours le calcul des images précédentes et suivantes est différent
+            // car on doit tenir compte de la catégorie
             if (isset($_GET["category"])){
                 $category = $_GET["category"];
+                // On récupère la liste des ID des images de la catégorie
                 $listId = $this->imageDAO->getListId($category);
+                
+                //On récupère la position courante dans la liste si elle existe
                 if(isset($_GET["positionListId"])){
                     $positionListId = $_GET["positionListId"];
                 }else{
                     $positionListId = 0;
                 }
-                $img = $this->imageDAO->getImage($listId[$positionListId][0]);
+                
+                //On récupère l'image gràce à l'ID de la position courante dans la liste
+                $data->img = $this->imageDAO->getImage($listId[$positionListId][0]);
+                $img = $data->img;
+                
+                //On affecte les données dans la variable data
+                $data->imgURL = $data->img->getURL();
+                $data->commentaire = $data->img->getCommentaire();
+                $data->categorie = $data->img->getCategorie();
+                $data->jugement = $data->img->getJugement();
                 $data->imgId=$img->getId();
+                
+                //On met à jour la poistion suivante et précédente dans la lsite
                 $nextPosition = $positionListId + 1;
                 $prevPosition = $positionListId - 1;
                 
+                //On test si on est en bout de liste(début ou fin) afin de créer une rotation dans le parcours des images
                 if($nextPosition == count($listId)){
                     $nextPosition = 0;
                 }
@@ -94,6 +123,8 @@
                 } 
                 $data->nextId = $listId[$nextPosition][0];
                 $data->prevId = $listId[$prevPosition][0];
+                
+                //On met à jour le lien vers l'image suivante et l'image précédente
                 $data->printNext = "<a href=\"index.php?controller=Photo&action=next&size=$size&imgId=$data->nextId&category=$category&positionListId=$nextPosition\">Next</a>\n";
                 $data->printPrev = "<a href=\"index.php?controller=Photo&action=prev&size=$size&imgId=$data->nextId&category=$category&positionListId=$prevPosition\">Prev</a>\n";
             }else{
@@ -101,6 +132,7 @@
                 $data->printPrev = "<a href=\"index.php?controller=Photo&action=prev&imgId=$data->prevId&size=$size\">Prev</a>\n";
             } 
             
+            //On gère l'affichage des informations de l'album en fonction de si l'image est dans un album ou non
             if($img->getIdAlbum() != null){
                 $id = $img->getIdAlbum();
                 $currentAlbum = $this->albumDAO->getAlbum($id);
@@ -120,74 +152,52 @@
             $this->first();
         }
         
+        
+        // Action sélectionnant la première image
         function first(){
-            global $data, $menu, $size, $img, $imgId, $listCategory;
+            global $data,$imgId, $menu;
             $this->getParam();
-            //récupération de l'image à partir de l'id
             $data->imgId = $imgId;
-            $imgURL = $img->getURL();
-            $data->imgURL = $imgURL;
-            $data->size = $size;
-
-            $menu->setZoom("index.php?controller=Photo&action=zoom&imgId=$imgId&size=$size");
-            $data->commentaire = $img->getCommentaire();
-            $data->categorie = $img->getCategorie();
-            $data->jugement = $img->getJugement();
-            
+            // On met à jour le menu zoom afin de préserver l'image courante
+            $menu->setZoom("index.php?controller=Photo&action=zoom&imgId=$data->imgId&size=$data->size");
             $data->content = "view/photoView.php";
             $data->menu = $menu->affiche();
             require_once("view/mainView.php");
         }
         
+        // Action affichant l'image suivante
         function next(){
-            global $data, $menu, $size, $imgId, $img;
+            global $data, $menu, $imgId;
             $this->getParam();
             $data->imgId = $imgId;
-            $imgURL = $img->getURL();
-            $data->imgURL = $imgURL;
-            $data->size = $size;
-            $menu->setZoom("index.php?controller=Photo&action=zoom&imgId=$imgId&size=$size");
-            $data->jugement = $img->getJugement();
-            
-            $data->commentaire = $img->getCommentaire();
-            $data->categorie = $img->getCategorie();
-            
-            
+            $menu->setZoom("index.php?controller=Photo&action=zoom&imgId=$data->imgId&size=$data->size");
             $data->content = "view/photoView.php";
             $data->menu = $menu->affiche();
             require_once("view/mainView.php");
         }
         
+        // Action affichant l'image précédente
         function prev(){
-            global $data, $menu, $size, $imgId, $img;
+            global $data, $menu, $imgId;
             $this->getParam();
             $data->imgId = $imgId;
-            $imgURL = $img->getURL();
-            $data->imgURL = $imgURL;
-            $data->size = $size;
-            $menu->setZoom("index.php?controller=Photo&action=zoom&imgId=$imgId&size=$size");
-            $data->jugement = $img->getJugement();
-            
-            $data->commentaire = $img->getCommentaire();
-            $data->categorie = $img->getCategorie();
-            
-            
+            $menu->setZoom("index.php?controller=Photo&action=zoom&imgId=$data->imgId&size=$data->size");
             $data->content = "view/photoView.php";
             $data->menu = $menu->affiche();
             require_once("view/mainView.php");
         }
         
+        
+        // Action affichant une image au hasard
         function random(){
             global $size, $menu, $data;
             $this->getParam();
             $data->size = $size;
             $data->imgURL = $this->image->getURL();
-            
             $imgId = $this->image->getId();
             $data->imgId = $imgId;
             $menu->setZoom("index.php?controller=Photo&action=zoom&imgId=$imgId&size=$size");
             $data->jugement = $this->image->getJugement();
-            
             $data->commentaire = $this->image->getCommentaire();
             $data->categorie = $this->image->getCategorie();
             
@@ -207,6 +217,7 @@
             require_once("view/mainView.php");
         }
         
+        // Action zoommant sur l'image courante
         function zoom(){
             global $size, $img, $data, $imgId, $menu;
             $this->getParam();
@@ -215,46 +226,44 @@
             $imgURL = $img->getURL();
             $data->imgURL = $imgURL;
             $menu->setZoom("index.php?controller=Photo&action=zoom&imgId=$imgId&size=$data->size");
-            
-            $data->commentaire = $img->getCommentaire();
-            $data->categorie = $img->getCategorie();
-            $data->jugement = $img->getJugement();
-            
             $data->content = "view/photoView.php";
             
             $data->menu = $menu->affiche();
             require_once("view/mainView.php");
         }
         
+        // Action gérant la mise à jour des données du formulaire
         function update(){
             global $data, $menu, $size, $imgId, $img;
             $this->getParam();
-            
-            $imgURL = $img->getURL();
-            $data->imgURL = $imgURL;
-            $data->size = $size;
             $menu->setZoom("index.php?controller=Photo&action=zoom&imgId=$imgId&size=$size");
             $data->imgId = $imgId;
+            
+            // On met à jour le commentaire si on a une donnée
             if(isset($_GET["newComment"])){
                 if(!empty($_GET["newComment"])){
                     $this->imageDAO->updateComment($imgId, $_GET["newComment"]);
                 }
             }
             
+            // On met à jour la catégorie si on a une donnée
             if(isset($_GET["newCategory"])){
                 if(!empty($_GET["newCategory"])){
                     $this->imageDAO->updateCategory($imgId, $_GET["newCategory"]);
                 }
             }
             
+            // On augmente la valeur du jugement si on a une donnée
             if(isset($_GET["upJugement"])){
                 $this->imageDAO->updateJugementUp($imgId);
             }
             
+            // On diminue la valeur du jugement is on a une donnée
             if(isset($_GET["downJugement"])){
                 $this->imageDAO->updateJugementDown($imgId);
             }
             
+            // On met à jour l'album si on a une donnée
             if(isset($_GET["newAlbum"])){
                 if(!empty($_GET["newAlbum"])){
                     $this->imageDAO->updateAlbum($imgId, $_GET["newAlbum"]);
@@ -262,6 +271,7 @@
                     $this->imageDAO->updateAlbum($imgId, null);
                 }
             }
+            // On récupère les informations de l'image courante pour réafficher cette image
             $img = $this->imageDAO->getImage($imgId);
             $data->commentaire = $img->getCommentaire();
             $data->categorie = $img->getCategorie();

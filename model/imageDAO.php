@@ -14,33 +14,6 @@
 		# Tableau pour stocker tous les chemins des images
 		private $imgEntry;
 		
-		# Lecture récursive d'un répertoire d'images
-		# Ce ne sont pas des objets qui sont stockes mais juste
-		# des chemins vers les images.
-		/*private function readDir($dir) {
-			# build the full path using location of the image base
-			$fdir=$this->path.$dir;
-			if (is_dir($fdir)) {
-				$d = opendir($fdir);
-				while (($file = readdir($d)) !== false) {
-					if (is_dir($fdir."/".$file)) {
-						# This entry is a directory, just have to avoid . and .. or anything starts with '.'
-						if (($file[0] != '.')) {
-							# a recursive call
-							$this->readDir($dir."/".$file);
-						}
-					} else {
-						# a simple file, store it in the file list
-						if (($file[0] != '.')) {
-							$this->imgEntry[]="$dir/$file";
-						}
-					}
-				}
-			}
-		}*/
-		
-	
-		
 		function __construct() {
 		    $dsn = 'sqlite:BD/BD.db'; // Data source name
 		    $user= ''; // Utilisateur
@@ -146,6 +119,7 @@
 			return $res;
 		}
 		
+		// Retourne toutes les catégories qui existent
 		function getAllCategory(){
 		    $s = $this->db->query('SELECT Distinct(category) FROM image');
 		    if ($s) {
@@ -159,6 +133,7 @@
 		    }
 		}
 		
+		// retourne la liste des id de la table Image
 		function getListId($category = null){
 		    $requete = 'SELECT id FROM image';
 		    if($category != null){
@@ -177,6 +152,8 @@
 		    }
 		}
 		
+		
+		// met à jour le commentaire d'une image
 		function updateComment($imgId, $comment){
 	        $requete = $this->db->prepare('update image set comment = :newComment where id = :imgId');
 	        if($requete){
@@ -191,6 +168,7 @@
 	        }
 		}
 		
+		// met à jour la catégorie d'une image
 		function updateCategory($imgId, $category){
 	        $requete = $this->db->prepare('update image set category = :newCategory where id = :imgId');
 	        if($requete){
@@ -205,6 +183,7 @@
 	        }
 		}
 		
+		// Augmente la valeur du jugement
 		function updateJugementUp($imgId){
 		    $requete = $this->db->prepare('update image set jugement = jugement + 1 where id=:imgId;');
 		    if($requete){
@@ -218,6 +197,8 @@
 		    }
 		}
 		
+		
+		// Diminue la valeur du jugement
 		function updateJugementDown($imgId){
 		    $requete = $this->db->prepare('update image set jugement = jugement - 1 where id=:imgId;');
 		    if($requete){
@@ -231,6 +212,7 @@
 		    }
 		}
 		
+		// met à jour (l'album d'une image)
 		function updateAlbum($imgId, $albumId){
 		    $requete = $this->db->prepare('update image set album = :album where id=:imgId;');
 		    if($requete){
@@ -245,6 +227,7 @@
 		    }
 		}
 		
+		// récupère la liste des images d'un album
 		function getListImageAlbum($idAlbum){
 		    $requete = "select * from image where album = $idAlbum;";
 		    $s = $this->db->query($requete);

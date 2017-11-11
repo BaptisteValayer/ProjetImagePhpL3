@@ -3,14 +3,15 @@
 <input type="hidden" name="action" value="first">
 <select name="category">
 	<?php 
+	   // Affiche de la liste déroulante de la catégorie
 	   $i=0;
 	   while(isset($data->listCategory[$i])){
 	       print "<option";
-	       if(isset($_GET["category"])){
-	           if($data->listCategory[$i][0] == $_GET["category"]){
+	           // cette condition permet de sélectionner la catégorie de l'image courante
+	           if($data->listCategory[$i][0] == $data->categorie){
 	               print " selected";
 	           }
-	       }
+	       
            print ">";
 	       print $data->listCategory[$i][0];
 	       print "</option>";
@@ -23,7 +24,7 @@
 </form>
 
 <?php
-    //TODO: faire de la mise en page pour la catégorie et le commentaire
+    //Affichage de l'image et de ses données
     print "<p>\n";
     print $data->printPrev;
     print $data->printNext;
@@ -48,6 +49,7 @@
 	<select name="newAlbum">
 		<option value="">sans album</option>
 	<?php 
+	   // Liste déroulante pour afficher tous les albums disponbiles
 	   foreach($data->listAlbum as $album){
 	       print '<option value="'.$album->getId().'"';
 	       if($album->getId() == $data->imgAlbumId){

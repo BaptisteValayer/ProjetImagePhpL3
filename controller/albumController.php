@@ -34,6 +34,8 @@
             }
         }
         
+        
+        //Action affichant la page d'accueil des albums
         function index(){
             global $menu, $data;
             $this->getParam();
@@ -42,6 +44,8 @@
             require_once("view/mainView.php");
         }
         
+        
+        //Action gérant la création d'un album
         function createAlbum(){
             global $menu, $data;    
             if(isset($_GET['creerAlbum'])){
@@ -57,6 +61,7 @@
             require_once("view/mainView.php");
         }
         
+        // Action permettant l'affichage d'un album
         function afficherAlbum(){
             global $menu, $data;
             $this->getParam();
@@ -65,6 +70,14 @@
             //var_dump($data->listPhotoAlbum);
             $data->menu = $menu->affiche();
             require_once("view/mainView.php");
+        }
+        
+        // Action gérant la suppression d'un album
+        function deleteAlbum(){
+            global $data;
+            $this->getParam();
+            $this->albumDAO->deleteAlbum($data->albumId);
+            $this->index();
         }
     }
 ?>
